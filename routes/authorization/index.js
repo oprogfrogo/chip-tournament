@@ -15,7 +15,7 @@ const queriesRegistrations = require('../../lib/queries/registrations');
 router.all('*', function (req, res, next) {
     logger.info(`Logged in account: ${req.session.userEmail}`);
     if(req.session.userEmail === null) {
-        req.session.store.clear();
+        req.session.destroy();
         res.redirect('/authorization/login');
     }
     next(); // pass control to the next handler
@@ -28,6 +28,15 @@ router.get('/login', async function (req, res) {
     };
 
     res.render('authorization/login', viewData);
+});
+
+router.get('/logout', async function (req, res) {
+
+    if(req.session) {
+        req.session.destroy();
+    }
+
+    res.redirect('/authorization/login');
 });
 
 router.post('/doLogin', async function (req, res) {
