@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Apps Team</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/bulma.min.css' />
+  <link rel="stylesheet" href="/stylesheets/dataTables.bulma.min.css" />
+  <link rel="stylesheet" href="/stylesheets/select.dataTables.min.css">
+  <link rel="stylesheet" href="/stylesheets/buttons.dataTables.min.css" />
+  <link rel="stylesheet" href="/stylesheets/datepicker.min.css">
+  <script src="/javascripts/jquery-3.6.0.min.js"></script>
+  <script src="/javascripts/jquery.dataTables.min.js"></script>
+  <script src="/javascripts/dataTables.bulma.min.js"></script>
+  <script src="/javascripts/dataTables.select.min.js"></script>
+  <script src="/javascripts/dataTables.buttons.min.js"></script>
+  <script src="/javascripts/jszip.min.js"></script>
+  <script src="/javascripts/pdfmake.min.js"></script>
+  <script src="/javascripts/vfs_fonts.js"></script>
+  <script src="/javascripts/buttons.html5.min.js"></script>
+  <script src="/javascripts/buttons.print.min.js"></script>
+  <script src="/javascripts/datepicker.min.js"></script>
+  <script src="/javascripts/application.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+  <%- include('../partials/header.ejs') %>
+      <div>
+
+      <% if(flash && flash.info != undefined && flash.info.length > 0) { %>
+          <div class="notification is-info" style="margin: 20px">
+            <button class="delete"></button>
+            <%- flash.info %>
+          </div>
+          <% } %>
+      <% if(flash && flash.success != undefined && flash.success.length > 0) { %>
+              <div class="notification is-primary" style="margin: 20px">
+                <button class="delete"></button>
+                <%- flash.success %>
+              </div>
+              <% } %>
+      <% if(flash && flash.warn != undefined && flash.warn.length > 0) { %>
+                  <div class="notification is-warning" style="margin: 20px">
+                    <button class="delete"></button>
+                    <%- flash.warn %>
+                  </div>
+                  <% } %>
+      <% if(flash && flash.error != undefined && flash.error.length > 0) { %>
+                      <div class="notification is-danger" style="margin: 20px">
+                        <button class="delete"></button>
+                        <%- flash.error %>
+                      </div>
+                      <% } %>
+
+                        <%- body %>
+
+      </div>
+      <%- include('../partials/footer.ejs') %>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+    // Handle notification delete buttons
+    (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+          const $notification = $delete.parentNode;
+
+          $delete.addEventListener('click', () => {
+            $notification.parentNode.removeChild($notification);
+          });
+        });
+      });
+</script>
+
+</body>
+
+</html>

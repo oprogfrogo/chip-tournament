@@ -1,0 +1,43 @@
+<section class="columns is-desktop is-centered is-info">
+    <div class="column is-one-fifth">
+        <article class="panel is-info">
+            <p class="panel-heading">
+                Register
+            </p>
+            <form action='doRegister' method='post' class="pb-6">
+                <div class="m-5">
+                    <div>
+                        <label>Full Name:</label>
+                        <input class="input" id="full-name" name="fullName" type="text" placeholder="John Doe" required autofocus>
+                    </div>
+                    <div>
+                        <label>Email:</label>
+                        <input class="input" id="email" name="email" type="text" placeholder="johndoe@gmail.com" required>
+                    </div>
+                    <div>
+                        <label>Password:</label>
+                        <input class="input" id="password" name="password" type="password" maxlength="24" minlength="6" placeholder="Length 6 - 24 characters" required>
+                    </div>
+                    <div>
+                        <label>Mobile Number:</label>
+                        <input class="input" id="phone" name="phone" type="tel" placeholder="XXX-XXX-XXXX" required>
+                    </div>
+                    <div>
+                        <label>Mobile Carrier:</label>
+                        <select class="input" required>
+                            <option value="">-- Select Carrier --</option>
+                            <option value="verizon">Verizon</option>
+                            <option value="tmobile">T-Mobile</option>
+                            <option value="att">AT&T</option>
+                            <option value="boost_mobile">Boost Mobile</option>
+                            <option value="us_cellular">U.S. Cellular</option>
+                        </select>
+                    </div>
+                    <div class="is-pulled-right mt-5">
+                        <input class="button" name="commit" type="submit" value="Submit">
+                    </div>
+                </div>
+            </form>
+        </article>
+    </div>
+</section>

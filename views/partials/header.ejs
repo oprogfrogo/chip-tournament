@@ -1,0 +1,42 @@
+<header>
+    <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a href="/">Chip Tournament Pro</a>
+        </div>
+        <div id="navbarBasic" class="navbar-menu" v-if="userId">
+            <div class="navbar-end">
+                <div class="buttons">
+                    <a href="/users/logout" class="button">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<script>
+    $(document).ready(function() {
+        // Hides the sub-menu item if anchors are not found within them
+        $('.nested').each(function() {
+            if ($(this).find('.navbar-sub-item').length > 0) {
+                $(this).show();
+            } else {
+                $(this).parent('.navbar-dropdown').hide();
+            }
+        });
+        
+        // Hides the menu item if navbar-dropdown are not found within them
+        $('.header-menu').each(function() {
+            if ($(this).find('.navbar-dropdown:not([style*="display: none"])').find('.navbar-item').length > 0) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+</script>
+
+<style>
+    .verticalLine {
+    border-left: solid #c6c6c6;
+    }
+</style>

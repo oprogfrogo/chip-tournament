@@ -1,0 +1,37 @@
+<section class="columns is-desktop is-centered is-info">
+    <div class="column is-one-fifth">
+        <article class="panel is-info">
+            <p class="panel-heading">
+                Login
+            </p>
+            <form action='doLogin' method='post' class="pb-6">
+                <div class="m-5">
+                    <div>
+                        <label>Email:</label>
+                        <div class="control">
+                            <input class="input" id="email" name="email" type="text">
+                        </div>
+                    </div>
+                    <div>
+                        <label>Password:</label>
+                        <div class="control">
+                            <input class="input" id="password" name="password" type="text">
+                        </div>
+                    </div>
+                    <div>
+                        <input class="button is-info is-pulled-right mt-4" name="commit" type="submit" value="Login">
+                    </div>
+                    <div>
+                        <a class="is-pulled-left pt-5" href="forgot_password">Forgot Password</a>
+                    </div>
+                </div>
+            </form>
+            <hr />
+            <div class="columns is-centered pb-3">
+                <p class="bd-notification is-primary">
+                    <a class="button is-primary is-medium" href="register">Create Account</a>
+                </p>
+            </div>
+        </article>
+    </div>
+</section>

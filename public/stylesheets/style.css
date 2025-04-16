@@ -1,0 +1,129 @@
+html, body {
+  height: 100%;
+ }
+
+/* Header */
+
+/* Navbar */
+.navbar {
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-item img {
+  max-height: 3.75rem;
+  border: 1px solid #cecece;
+}
+
+nav.navbar {
+  background: #f9f8f8;
+  margin-bottom: 40px;
+}
+
+/* Body */
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+section {
+  padding-bottom: 20px;
+}
+
+th {
+  white-space: nowrap;
+}
+
+td {
+  padding: 1px;
+}
+
+table.dataTable {
+  width: 50%;
+}
+
+.field {
+  padding: 20px;
+}
+
+a {
+  color: #00B7FF;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+#search-results {
+  margin: 0 100px;
+}
+
+/* Footer */
+.footer {
+  background: #f9f8f8;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 0 !important;
+  text-align: center;
+}
+
+#content {
+  margin-bottom: 160px;
+}
+
+/* DataTable */
+.dataTables_wrapper {
+  padding: 40px 0 !important;
+}
+
+table.dataTable .button {
+  height: 20px;
+}
+
+table.dataTable td {
+  font-size: 14px;
+}
+
+table.dataTable.hover tbody tr:hover,
+table.dataTable.display tbody tr:hover {
+  background-color: #EEE;
+}
+
+button.dt-button, div.dt-button, a.dt-button, input.dt-button {
+  padding: 1px !important;
+  margin-right: 0 !important;
+  font-size: 10px !important;
+}
+
+.odd {
+  background-color: #eee;
+}
+
+.even {
+  background-color: #fff;
+}
+
+.selected {
+  background-color: rgb(145, 171, 255);
+}
+
+.dataTables_wrapper {
+  margin: 5px;
+}
+
+/* Navbar nested dropdown */
+.nested.dropdown:hover > .dropdown-menu {
+  display: block;
+}
+
+.nested.dropdown .dropdown-menu {
+  top: -12px;
+  margin-left: 100%;
+}
+
+.nested.dropdown .dropdown-trigger button {
+  padding: 0px 0px;
+  border: 0px;
+  font-size: 14px;
+  font-weight: 400;  
+}
