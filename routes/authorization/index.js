@@ -45,23 +45,23 @@ router.post('/doLogin', async function (req, res) {
 
     const { email, password } = req.body;
     const accountFound = await queriesRegistrations.getExistingRegistrations(email);
-    const encryptedPassword = accountFound.password.replace(/"/g, '');
-    const decryptedPassword = await crypt.decrypt(encryptedPassword, cryptKey, cryptIv);
 
-    if(decryptedPassword === password) {
-        logger.info(`Password matched!`);
-        req.session.userEmail = email;
-        res.redirect('/tournaments');
-    } else {
-        logger.info(`Password did not match!`);
-        const viewData = {
-            flash: req.flash('flash')[0]
-        };
-    
-        res.render('authorization/login', viewData);
+    if(accountFound) {
+        const encryptedPassword = accountFound.password.replace(/"/g, '');
+        const decryptedPassword = await crypt.decrypt(encryptedPassword, cryptKey, cryptIv);
+
+        if(decryptedPassword === password) {
+            logger.info(`Password matched!`);
+            req.session.userEmail = email;
+            req.flash('flash', { success: `Successfully logged in!` });
+            res.redirect('/tournaments');
+            return;
+        }
     }
 
-    return;
+    logger.info(`Incorrect login!`);
+    req.flash('flash', { error: `Incorrect login!` });
+    res.redirect('login');
 });
 
 router.get('/register', async function (req, res) {
@@ -116,9 +116,11 @@ router.get('/reset_new_password', async function (req, res) {
     const differenceInSeconds = Math.abs(resetRequestedAtUnixTimeStamp - now);
     const fiveMinutesInSeconds = 5 * 60;
 
-    logger.info(`differenceInSeconds----------${differenceInSeconds}`)
-    logger.info(`fiveMinutesInSeconds----------${fiveMinutesInSeconds}`)
-    logger.info(`differenceInSeconds > fiveMinutesInSeconds----------${differenceInSeconds > fiveMinutesInSeconds}`)
+    if(differenceInSeconds > fiveMinutesInSeconds) {
+        logger.info(`Expired password reset!`);
+        req.flash('flash', { error: `Password reset request expired! Please try again.` });
+        res.redirect('login');
+    }
 
     const viewData = {
         flash: req.flash('flash')[0],
@@ -158,9 +160,6 @@ router.post('/update_password', async function (req, res) {
 
     password = await crypt.encrypt(password, cryptKey, cryptIv);
     password = password.replace(/"/g, '');
-
-    logger.info(`---------------${password}`)
-    logger.info(`---------------${ref}`)
 
     const updatePassword = await queriesRegistrations.updatePassword(ref, password);
 
