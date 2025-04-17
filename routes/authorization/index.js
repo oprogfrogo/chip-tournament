@@ -5,7 +5,9 @@ const express = require('express');
 const router = express.Router();
 const pino = require('pino');
 const logger = pino();
+const mailer = require('../../lib/mailer');
 const requestIp = require('request-ip');
+const { format, getUnixTime } = require('date-fns');
 
 const crypt = require('../../lib/functions/crypt');
 const cryptKey = '0RuxUBV3oFeuRdsUGrA5N24DdVWeeoF5'; // 256-bit key
@@ -91,7 +93,7 @@ router.post('/doRegister', async function (req, res) {
     params.password = params.password.replace(/"/g, '');
     params.ip = requestIp.getClientIp(req);
 
-    await queriesRegistrations.insertRegistration(params);    
+    await queriesRegistrations.insertRegistration(params);
 
     res.render('authorization/register', viewData);
 });
@@ -105,13 +107,70 @@ router.get('/forgot_password', async function (req, res) {
     res.render('authorization/forgot_password', viewData);
 });
 
-router.get('/reset_password', async function (req, res) {
+router.get('/reset_new_password', async function (req, res) {
+
+    const id = req.query.ref;
+    const resetRequestedAtUnixTimeStamp = req.query.t;
+    const now = getUnixTime(new Date())
+
+    const differenceInSeconds = Math.abs(resetRequestedAtUnixTimeStamp - now);
+    const fiveMinutesInSeconds = 5 * 60;
+
+    logger.info(`differenceInSeconds----------${differenceInSeconds}`)
+    logger.info(`fiveMinutesInSeconds----------${fiveMinutesInSeconds}`)
+    logger.info(`differenceInSeconds > fiveMinutesInSeconds----------${differenceInSeconds > fiveMinutesInSeconds}`)
 
     const viewData = {
-        flash: req.flash('flash')[0]
+        flash: req.flash('flash')[0],
+        ref: id
     };
 
-    res.render('authorization/forgot_password', viewData);
+    res.render('authorization/set_new_password', viewData);
+});
+
+router.post('/reset_password', async function (req, res) {
+
+    const email = req.body.email;
+    const accountFound = await queriesRegistrations.getExistingRegistrations(email);
+
+    logger.info(`Account found for ${email}`);
+
+    await mailer.sendEmail(
+        'Chip Tournaments Pro <support@chiptournamentspro.com>',
+        accountFound.email,
+        'Password Reset',
+        accountFound.full_name,
+        `Click to reset: https://localhost:4002/authorization/reset_new_password?ref=${accountFound.id}&t=${getUnixTime(new Date())}`,
+        'reset_password.ejs'
+    )
+
+    req.flash('flash', { success: `Please check your email for a reset password link` });
+
+    await queriesRegistrations.updateResetRequestAt(accountFound.id);
+
+    res.redirect('login');
+});
+
+router.post('/update_password', async function (req, res) {
+
+    let password = req.body.password;
+    const ref = req.body.ref;
+
+    password = await crypt.encrypt(password, cryptKey, cryptIv);
+    password = password.replace(/"/g, '');
+
+    logger.info(`---------------${password}`)
+    logger.info(`---------------${ref}`)
+
+    const updatePassword = await queriesRegistrations.updatePassword(ref, password);
+
+    if(updatePassword) {
+        req.flash('flash', { success: `Password was successfully updated` });
+    } else {
+        req.flash('flash', { error: `Error updating password` });
+    }
+
+    res.redirect('login');
 });
 
 module.exports = router;
